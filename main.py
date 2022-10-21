@@ -1,7 +1,6 @@
 from fastapi import FastAPI, UploadFile, File
 import random
 from fastapi.middleware.cors import CORSMiddleware
-
 import cv2
 import numpy as np
 from pydantic import BaseModel
@@ -18,19 +17,10 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-from fastapi import UploadFile, File
 
 
 @app.get("/")
 async def main():
-    return {"Scores": [random.randint(10, 100) / 100, random.randint(10, 100) / 100,
-                       random.randint(10, 100) / 100, random.randint(10, 100) / 100,
-                       random.randint(10, 100) / 100, random.randint(10, 100) / 100,
-                       random.randint(10, 100) / 100, random.randint(10, 100) / 100]}
-
-
-@app.post("/upload_image/{user_id}")
-async def upload_image(user_id: int, file: UploadFile = File(...)):
     return {"Scores": [random.randint(10, 100) / 100, random.randint(10, 100) / 100,
                        random.randint(10, 100) / 100, random.randint(10, 100) / 100,
                        random.randint(10, 100) / 100, random.randint(10, 100) / 100,
