@@ -29,7 +29,7 @@ async def main():
                        random.randint(10, 100) / 100, random.randint(10, 100) / 100]}
 
 
-@app.post("/upload")
+@app.post("/upload_image/{user_id}")
 async def upload_image(user_id: int, file: UploadFile = File(...)):
     return {"Scores": [random.randint(10, 100) / 100, random.randint(10, 100) / 100,
                        random.randint(10, 100) / 100, random.randint(10, 100) / 100,
