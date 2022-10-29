@@ -35,4 +35,5 @@ async def root(file: UploadFile = File(...)):
     contents = await file.read()
     nparr = np.fromstring(contents, np.uint8)
     img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+    # img is in BRG format
     return str(img[0][0])
