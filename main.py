@@ -4,6 +4,7 @@ from starlette.middleware import Middleware
 from starlette.middleware.cors import CORSMiddleware
 import cv2
 import io
+import numpy as np
 
 
 middleware = [
@@ -31,7 +32,7 @@ async def main():
 
 @app.post("/upload")
 async def root(file: UploadFile = File(...)):
-        # request_object_content = await file.read()
-        # img = cv2.imread(io.BytesIO(request_object_content))
-        # firstPixel = img[0][0]
-        return 'Poggers'
+    contents = await file.read()
+    nparr = np.fromstring(contents, np.uint8)
+    img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+    return str(img[0][0])
