@@ -3,7 +3,6 @@ import random
 from starlette.middleware import Middleware
 from starlette.middleware.cors import CORSMiddleware
 import cv2
-import io
 import numpy as np
 
 
@@ -20,14 +19,13 @@ middleware = [
 app = FastAPI(middleware=middleware)
 
 
-
 @app.get("/")
 async def main():
-    return {"Scores": [random.randint(10, 100) / 100, random.randint(10, 100) / 100,
-                       random.randint(10, 100) / 100, random.randint(10, 100) / 100,
-                       random.randint(10, 100) / 100, random.randint(10, 100) / 100,
-                       random.randint(10, 100) / 100, random.randint(10, 100) / 100]}
-
+    return {"Scores":
+            [random.randint(10, 100) / 100, random.randint(10, 100) / 100,
+             random.randint(10, 100) / 100, random.randint(10, 100) / 100,
+             random.randint(10, 100) / 100, random.randint(10, 100) / 100,
+             random.randint(10, 100) / 100, random.randint(10, 100) / 100]}
 
 
 @app.post("/upload")
