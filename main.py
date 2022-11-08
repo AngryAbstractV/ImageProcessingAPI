@@ -175,23 +175,26 @@ def calcHarmony(hsvImg):
     for x in range(xy_init, (img_len - xy_init)):  # img_len - xy_init shou
 
         for y in range(xy_init, (img_wid - xy_init)):
+            if x % 3 == 0 and y % 3 == 0:
             # pull out submatrix surrounding anchor
-            neighMatrix = hsvImg[(x - xy_init):(x + xy_init) + 1,
-                          (y - xy_init):(y + xy_init) + 1]
+                neighMatrix = hsvImg[(x - xy_init):(x + xy_init) + 1,
+                              (y - xy_init):(y + xy_init) + 1]
 
-            histogram = genNeighborhoodHistogram(neighMatrix, setting='hue')
-            hueval += calcPixelHarmony(histogram)
+                histogram = genNeighborhoodHistogram(neighMatrix, setting='hue')
+                hueval += calcPixelHarmony(histogram)
 
-            histogram = genNeighborhoodHistogram(neighMatrix,
-                                                 setting='saturation')
-            satval += calcPixelHarmony(histogram)
+                histogram = genNeighborhoodHistogram(neighMatrix,
+                                                     setting='saturation')
+                satval += calcPixelHarmony(histogram)
 
-            histogram = genNeighborhoodHistogram(neighMatrix, setting='value')
-            valval += calcPixelHarmony(histogram)
+                histogram = genNeighborhoodHistogram(neighMatrix, setting='value')
+                valval += calcPixelHarmony(histogram)
     totalHarmony = (hueval + satval + valval) / 3
 
     scalingValue = ((img_len - (xy_init * 2)) * (img_wid - (xy_init * 2))) * 4
     totalHarmony = totalHarmony / scalingValue
+    totalHarmony = totalHarmony * 10
+    totalHarmony -= .1
 
     return totalHarmony
 
