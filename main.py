@@ -6,17 +6,15 @@ import numpy as np
 import math
 from scipy.signal import argrelextrema
 
-middleware = [
-    Middleware(
-        CORSMiddleware,
-        allow_origins=['*'],
-        allow_credentials=True,
-        allow_methods=['*'],
-        allow_headers=['*']
-    )
-]
+app = FastAPI()
 
-app = FastAPI(middleware=middleware)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Allows all origins
+    allow_credentials=True,
+    allow_methods=["*"],  # Allows all methods
+    allow_headers=["*"],  # Allows all headers
+)
 
 
 @app.post("/upload")
@@ -29,7 +27,6 @@ async def root(file: UploadFile = File(...)):
     properties_list[2] = calcHarmony(processedIMG)
     properties_list[3] = calcVariety(processedIMG)
     return properties_list
-
 
 
 def preprocessing(img):
