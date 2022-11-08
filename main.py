@@ -22,7 +22,7 @@ app.add_middleware(
 
 @app.post("/upload")
 async def root(file: UploadFile = File(...)):
-    contents = await file.read()
+    contents = file.file.read()
     properties_list = [0] * 6
     nparr = np.fromstring(contents, np.uint8)
     img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
