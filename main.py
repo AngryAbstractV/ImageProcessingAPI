@@ -1,7 +1,6 @@
 from fastapi import FastAPI, File, UploadFile
-import random
-from starlette.middleware import Middleware
-from starlette.middleware.cors import CORSMiddleware
+from fastapi.middleware import Middleware
+from fastapi.middleware.cors import CORSMiddleware
 import cv2
 import numpy as np
 import math
@@ -60,7 +59,7 @@ def preprocessing(img):
             new_wid = pix_threshold
             new_len = pix_threshold
 
-        dim = (new_wid, new_len)
+        dim = (img_wid, img_len)
         hsv_img = cv2.resize(hsv_img, dim, interpolation=cv2.INTER_AREA)
         return hsv_img
 
