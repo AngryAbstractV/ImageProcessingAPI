@@ -1,24 +1,21 @@
-from fastapi import FastAPI, File, UploadFile
-from fastapi.middleware import Middleware
-from fastapi.middleware.cors import CORSMiddleware
-import cv2
+from fastapi import FastAPI
 import random
-import numpy as np
-import math
-from scipy.signal import argrelextrema
+from starlette.middleware import Middleware
+from starlette.middleware.cors import CORSMiddleware
 
-app = FastAPI()
 
-origins = [
-    "*"
+middleware = [
+    Middleware(
+        CORSMiddleware,
+        allow_origins=['*'],
+        allow_credentials=True,
+        allow_methods=['*'],
+        allow_headers=['*']
+    )
 ]
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+
+app = FastAPI(middleware=middleware)
+
 
 
 @app.get("/")
