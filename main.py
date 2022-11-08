@@ -6,7 +6,6 @@ import numpy as np
 import math
 from scipy.signal import argrelextrema
 
-
 middleware = [
     Middleware(
         CORSMiddleware,
@@ -20,11 +19,10 @@ middleware = [
 app = FastAPI(middleware=middleware)
 
 
-
 @app.post("/upload")
 async def root(file: UploadFile = File(...)):
     contents = await file.read()
-    properties_list = [0]*6
+    properties_list = [0] * 6
     nparr = np.fromstring(contents, np.uint8)
     img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
     processedIMG = preprocessing(img)
@@ -33,8 +31,8 @@ async def root(file: UploadFile = File(...)):
     return properties_list
 
 
-def preprocessing(img):
 
+def preprocessing(img):
     hsv_img = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
 
     # Scale image, preserving aspect ratio
@@ -65,7 +63,7 @@ def preprocessing(img):
 
 
 def genNeighborhoodHistogram(neighborhoodMatrix, setting='hue'):
-    neighborhoodHistogram = [0]*8
+    neighborhoodHistogram = [0] * 8
     shape = neighborhoodMatrix.shape
     # for each pixel in neighborhood:
     for x in range(shape[0]):
@@ -82,6 +80,7 @@ def genNeighborhoodHistogram(neighborhoodMatrix, setting='hue'):
             # increment count for bucket
             neighborhoodHistogram[val] += 1
     return neighborhoodHistogram
+
 
 # calc max modes OPT 1
 # check edge cases for histogram
@@ -134,6 +133,7 @@ def calcPixelHarmony(neighborhoodHistogram):
     return minHarmony
 """
 
+
 # calculate the individual pixel harmony based on a tuple of the two max modes
 # modes[colorcatagory, quantity]
 
@@ -164,12 +164,12 @@ def calcHarmony(hsvImg):
     img_wid = hsvImg.shape[1]  # left to right
     img_len = hsvImg.shape[0]  # up to down
 
-    for x in range(xy_init, (img_len - xy_init)):   # img_len - xy_init shou
+    for x in range(xy_init, (img_len - xy_init)):  # img_len - xy_init shou
 
         for y in range(xy_init, (img_wid - xy_init)):
             # pull out submatrix surrounding anchor
             neighMatrix = hsvImg[(x - xy_init):(x + xy_init) + 1,
-                                 (y - xy_init):(y + xy_init) + 1]
+                          (y - xy_init):(y + xy_init) + 1]
 
             histogram = genNeighborhoodHistogram(neighMatrix, setting='hue')
             hueval += calcPixelHarmony(histogram)
@@ -196,14 +196,14 @@ def get_hist(img):
 def calcVariance(avg, count, total):
     sqSum = 0
     for i in range(len(count)):
-        sqSum += (count[i] - avg)**2
-    return sqSum/(len(count))
+        sqSum += (count[i] - avg) ** 2
+    return sqSum / (len(count))
 
 
 def maxVariance(avg, count, total):
     i = len(count)
-    m = (i-1)*(avg)**2 + (total - avg)**2
-    return m/i
+    m = (i - 1) * (avg) ** 2 + (total - avg) ** 2
+    return m / i
 
 
 def calcScore(count, total):
