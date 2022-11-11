@@ -47,9 +47,7 @@ async def root(file: UploadFile = File(...)):
     img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
     prediction = pred(img)
     prediction = np.array(prediction)
-    pred_array = [0] * 8
-    pred_array[0] = np.float32(prediction[0][0])
-    return pred_array
+    return str(prediction)
 
 @app.post("/upload2")
 async def root(file: UploadFile = File(...)):
@@ -70,7 +68,7 @@ def pred(img):
     img = np.float32(img)
     img_array = tf.expand_dims(img, 0)
     predictions = model.predict(img_array)
-    return predictions
+    return predictions[0]
 
 
 def preprocessing(img):
