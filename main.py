@@ -40,10 +40,34 @@ async def root(file: UploadFile = File(...)):
     properties_list[3] = calcVariety(processedIMG)
     return properties_list
 
+@app.post("/predict")
+async def root(file: UploadFile = File(...)):
+    contents = await file.read()
+    nparr = np.fromstring(contents, np.uint8)
+    img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+    prediction = pred(img)
+    prediction = np.array(prediction)
+    pred_array = [0] * 8
+    pred_array[0] = np.float32(prediction[0][0])
+    return pred_array
 
+@app.post("/upload2")
+async def root(file: UploadFile = File(...)):
+    contents = await file.read()
+    properties_list = [0] * 6
+    nparr = np.fromstring(contents, np.uint8)
+    img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+    processedIMG = preprocessing(img)
+    properties_list[2] = calcHarmony(processedIMG)
+    properties_list[3] = calcVariety(processedIMG)
+    test = img[0][0]
+    return str(img[0][0])
+
+model = tf.keras.models.load_model('model_03_a_0.2411_l_1.9252_va_0.2131_vl_1.9761.h5')
 def pred(img):
-    model = tf.keras.models.load_model('model_03_a_0.2411_l_1.9252_va_0.2131_vl_1.9761.h5')
+    mg = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     img = cv2.resize(img, (120, 120),interpolation=cv2.INTER_CUBIC)
+    img = np.float32(img)
     img_array = tf.expand_dims(img, 0)
     predictions = model.predict(img_array)
     return predictions
