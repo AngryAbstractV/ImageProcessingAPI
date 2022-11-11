@@ -6,6 +6,7 @@ from starlette.middleware.cors import CORSMiddleware
 import cv2
 from scipy.signal import argrelextrema
 import math
+import tensorflow as tf
 
 middleware = [
     Middleware(
@@ -38,6 +39,14 @@ async def root(file: UploadFile = File(...)):
     properties_list[2] = calcHarmony(processedIMG)
     properties_list[3] = calcVariety(processedIMG)
     return properties_list
+
+
+def pred(img):
+    model = tf.keras.models.load_model('model_03_a_0.2411_l_1.9252_va_0.2131_vl_1.9761.h5')
+    img = cv2.resize(img, (120, 120),interpolation=cv2.INTER_CUBIC)
+    img_array = tf.expand_dims(img, 0)
+    predictions = model.predict(img_array)
+    return predictions
 
 
 def preprocessing(img):
