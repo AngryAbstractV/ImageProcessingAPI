@@ -41,7 +41,7 @@ async def root(file: UploadFile = File(...)):
     return properties_list
 
 @app.post("/predict")
-async def root(file: UploadFile = File(...)):
+async def predict(file: UploadFile = File(...)):
     contents = await file.read()
     nparr = np.fromstring(contents, np.uint8)
     img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
@@ -49,17 +49,6 @@ async def root(file: UploadFile = File(...)):
     prediction = np.array(prediction)
     return str(prediction)
 
-@app.post("/upload2")
-async def root(file: UploadFile = File(...)):
-    contents = await file.read()
-    properties_list = [0] * 6
-    nparr = np.fromstring(contents, np.uint8)
-    img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
-    processedIMG = preprocessing(img)
-    properties_list[2] = calcHarmony(processedIMG)
-    properties_list[3] = calcVariety(processedIMG)
-    test = img[0][0]
-    return str(img[0][0])
 
 model = tf.keras.models.load_model('model_03_a_0.2411_l_1.9252_va_0.2131_vl_1.9761.h5')
 def pred(img):
