@@ -52,7 +52,7 @@ async def predict(file: UploadFile = File(...)):
 
 model = tf.keras.models.load_model('model_03_a_0.2411_l_1.9252_va_0.2131_vl_1.9761.h5')
 def pred(img):
-    mg = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     img = cv2.resize(img, (120, 120),interpolation=cv2.INTER_CUBIC)
     img = np.float32(img)
     img_array = tf.expand_dims(img, 0)
