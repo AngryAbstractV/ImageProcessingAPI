@@ -3,7 +3,7 @@ import numpy as np
 # from features.balance import calcBalance
 # from features.emphasis import calcEmphasis
 # from features.movement import calcMovement
-# from features.gradation import calcGradation
+from features.gradation import calcGradation
 from features.harmony import calcHarmony
 from features.variety import calcVariety
 
@@ -80,7 +80,7 @@ class Painting:
         self.properties_list[3] = calcVariety(self.hsv_img)
 
         # call gradation
-        # self.properties_list[4] = calcGradation(self.hsv_img)
+        self.properties_list[4] = calcGradation(self.hsv_img)
 
         # call movement
         # self.properties_list[5] = calcMovement(self.hsv_img)
