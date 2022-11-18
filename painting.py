@@ -1,11 +1,11 @@
 import cv2
 import numpy as np
-# from balance import calcBalance
-# from emphasis import calcEmphasis
-# from movement import calcMovement
-# from gradation import calcGradation
-from harmony import calcHarmony
-from variety import calcVariety
+# from features.balance import calcBalance
+# from features.emphasis import calcEmphasis
+# from features.movement import calcMovement
+# from features.gradation import calcGradation
+from features.harmony import calcHarmony
+from features.variety import calcVariety
 
 
 # from gradation import calcGradation
