@@ -23,10 +23,7 @@ app = FastAPI(middleware=middleware)
 
 @app.get("/")
 async def main():
-    return {"Scores": [random.randint(10, 100) / 100, random.randint(10, 100) / 100,
-                       random.randint(10, 100) / 100, random.randint(10, 100) / 100,
-                       random.randint(10, 100) / 100, random.randint(10, 100) / 100,
-                       random.randint(10, 100) / 100, random.randint(10, 100) / 100]}
+    return {"Connected!"}
 
 
 @app.post("/process")

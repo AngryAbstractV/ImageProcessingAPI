@@ -1,11 +1,15 @@
 import cv2
 import numpy as np
-# from features.balance import calcBalance
-# from features.emphasis import calcEmphasis
-# from features.movement import calcMovement
-from features.gradation import calcGradation
+
+from features.basicSymmetry import calcBalance
+from features.emphasis import calcEmphasis
+#from balance import calcBalance
+#from emphasis import calcEmphasis
+#from movement import calcMovement
 from features.harmony import calcHarmony
+from features.movement import calcMovement
 from features.variety import calcVariety
+from features.gradation import calcGradation
 
 
 # from gradation import calcGradation
@@ -15,8 +19,6 @@ class Painting:
 
     # init method or constructor
     def __init__(self, img):
-        # self.name = name
-        # self.imageAddress = imageAddress
         self.properties_list = [0] * 6
         self.img = img
         self.hsv_img = np.zeros((1, 1, 1), dtype=np.int32)
@@ -25,7 +27,6 @@ class Painting:
         # pre-processesing on image
 
         # input image
-        # self.img = cv2.imread(self.imageAddress, 1)
 
         self.hsv_img = cv2.cvtColor(self.img, cv2.COLOR_BGR2HSV)
         # hsv_img is a 3d numpy array with the inner array having values:
@@ -64,14 +65,11 @@ class Painting:
     def calculateProperties(self):
         # call all feature algorithms and return a list of feature scores normalized from 0 to 1
 
-        # TODO: remove once a feature is complete and integrated into driver
-        # self.properties_list = [0.5]*6
-
         # call balance
-        # self.properties_list[0] = calcBalance(self.hsv_img)
+        self.properties_list[0] = calcBalance(self.hsv_img)
 
         # call emphasis
-        # self.properties_list[1] = calcEmphasis(self.img)
+        self.properties_list[1] = calcEmphasis(self.img)
 
         # call harmony
         self.properties_list[2] = calcHarmony(self.hsv_img)
@@ -79,12 +77,12 @@ class Painting:
         # call variety
         self.properties_list[3] = calcVariety(self.hsv_img)
 
-        # call gradation
+        #call gradation
         self.properties_list[4] = calcGradation(self.hsv_img)
 
+
         # call movement
-        # self.properties_list[5] = calcMovement(self.hsv_img)
-        print("properties calculations complete")
+        self.properties_list[5] = calcMovement(self.hsv_img)
         return
 
     def getImage(self):
