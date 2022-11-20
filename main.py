@@ -18,15 +18,32 @@ middleware = [
     )
 ]
 
-app = FastAPI(middleware=middleware)
+description = """
+Angry Abstract V API helps you predict the emotion from an abstract piece of art.
+
+## predictNN
+
+Predict an emotion from an image file using a convolutional neural network.
+Returns the confidence for each emotion in the format [amusement, anger, awe, contentment, disgust, excitement, fear, sadness]
+
+## predictIP
+
+Predict an emotion from an image file using image processing techniques to score the art on balance, harmony, variety, movement, emphasis, and gradation.
+Returns the confidence for each emotion in the format [amusement, anger, awe, contentment, disgust, excitement, fear, sadness]
+
+## process
+
+Returns the raw image processing scores on a scale 0-1 in the format [balance, emphasis, harmony, variety, gradation, movement]
+"""
+
+app = FastAPI(middleware=middleware,
+description=description
+)
 
 
 @app.get("/")
 async def main():
-    return {"Scores": [random.randint(10, 100) / 100, random.randint(10, 100) / 100,
-                       random.randint(10, 100) / 100, random.randint(10, 100) / 100,
-                       random.randint(10, 100) / 100, random.randint(10, 100) / 100,
-                       random.randint(10, 100) / 100, random.randint(10, 100) / 100]}
+    return {"Connected!"}
 
 
 @app.post("/process")
@@ -49,16 +66,16 @@ async def predict(file: UploadFile = File(...)):
     prediction = np.array(prediction)
     return str(prediction)
 
-# @app.post("/predictIP")
-# async def predictIP(file: UploadFile = File(...)):
-#     contents = await file.read()
-#     nparr = np.fromstring(contents, np.uint8)
-#     img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
-#     painting = Painting(img)
-#     painting.preprocessing()
-#     painting.calculateProperties()
-#     prediction = predIP(painting.properties_list)
-#     return str(prediction)
+@app.post("/predictIP")
+async def predictIP(file: UploadFile = File(...)):
+    contents = await file.read()
+    nparr = np.fromstring(contents, np.uint8)
+    img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+    painting = Painting(img)
+    painting.preprocessing()
+    painting.calculateProperties()
+    prediction = predIP([painting.properties_list])
+    return str(prediction)
 
 
 modelNN = tf.keras.models.load_model('model_03_a_0.2411_l_1.9252_va_0.2131_vl_1.9761.h5')
@@ -70,7 +87,7 @@ def predNN(img):
     predictions = modelNN.predict(img_array)
     return predictions[0]
 
-# modelIP = tf.keras.models.load_model('MODEL NAME HERE')
-# def predIP(ipScores):
-#     predictions = modelIP.predict(ipScores)
-#     return predictions[0]
+modelIP = tf.keras.models.load_model('model-15-acc_0.1685-valacc_0.1844.h5')
+def predIP(ipScores):
+    predictions = modelIP.predict(ipScores)
+    return predictions[0]

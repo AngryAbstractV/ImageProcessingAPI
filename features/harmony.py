@@ -126,3 +126,6 @@ def calcHarmony(hsvImg):
     totalHarmony = totalHarmony * 10
     totalHarmony -= .1
     return totalHarmony
+
+
+
