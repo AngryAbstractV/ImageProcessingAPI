@@ -46,16 +46,16 @@ async def predict(file: UploadFile = File(...)):
     prediction = np.array(prediction)
     return str(prediction)
 
-# @app.post("/predictIP")
-# async def predictIP(file: UploadFile = File(...)):
-#     contents = await file.read()
-#     nparr = np.fromstring(contents, np.uint8)
-#     img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
-#     painting = Painting(img)
-#     painting.preprocessing()
-#     painting.calculateProperties()
-#     prediction = predIP(painting.properties_list)
-#     return str(prediction)
+@app.post("/predictIP")
+async def predictIP(file: UploadFile = File(...)):
+    contents = await file.read()
+    nparr = np.fromstring(contents, np.uint8)
+    img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+    painting = Painting(img)
+    painting.preprocessing()
+    painting.calculateProperties()
+    prediction = predIP([painting.properties_list])
+    return str(prediction)
 
 
 modelNN = tf.keras.models.load_model('model_03_a_0.2411_l_1.9252_va_0.2131_vl_1.9761.h5')
@@ -67,7 +67,7 @@ def predNN(img):
     predictions = modelNN.predict(img_array)
     return predictions[0]
 
-# modelIP = tf.keras.models.load_model('MODEL NAME HERE')
-# def predIP(ipScores):
-#     predictions = modelIP.predict(ipScores)
-#     return predictions[0]
+modelIP = tf.keras.models.load_model('model-15-acc_0.1685-valacc_0.1844.h5')
+def predIP(ipScores):
+    predictions = modelIP.predict(ipScores)
+    return predictions[0]
