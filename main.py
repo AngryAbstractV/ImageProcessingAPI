@@ -18,7 +18,27 @@ middleware = [
     )
 ]
 
-app = FastAPI(middleware=middleware)
+description = """
+Angry Abstract V API helps you predict the emotion from an abstract piece of art.
+
+## predictNN
+
+Predict an emotion from an image file using a convolutional neural network.
+Returns the confidence for each emotion in the format [amusement, anger, awe, contentment, disgust, excitement, fear, sadness]
+
+## predictIP
+
+Predict an emotion from an image file using image processing techniques to score the art on balance, harmony, variety, movement, emphasis, and gradation.
+Returns the confidence for each emotion in the format [amusement, anger, awe, contentment, disgust, excitement, fear, sadness]
+
+## process
+
+Returns the raw image processing scores on a scale 0-1 in the format [balance, emphasis, harmony, variety, gradation, movement]
+"""
+
+app = FastAPI(middleware=middleware,
+description=description
+)
 
 
 @app.get("/")
